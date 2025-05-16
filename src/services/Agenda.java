@@ -25,14 +25,6 @@ public class Agenda {
         return contactos.remove(contacto);
     }
 
-    public boolean actualizarContacto(Contacto original, Contacto actualizado) {
-        int index = contactos.indexOf(original);
-        if (index != -1) {
-            contactos.set(index, actualizado);
-            return true;
-        }
-        return false;
-    }
 
     public List<Contacto> obtenerContactos() {
         return new ArrayList<>(contactos); // Copia defensiva

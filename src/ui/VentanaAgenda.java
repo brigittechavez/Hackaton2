@@ -78,24 +78,28 @@ public class VentanaAgenda extends JFrame {
         // Botones
         JButton btnAgregar = new JButton("Agregar");
         JButton btnBuscar = new JButton("Buscar");
+        JButton btnEliminar = new JButton("Eliminar");  // Nuevo botón para eliminar
         JButton btnListar = new JButton("Listar contactos");
         JButton btnLimpiar = new JButton("Limpiar");
 
         // Estética de botones
         configurarBoton(btnAgregar, new Color(70, 130, 180));
         configurarBoton(btnBuscar, new Color(60, 179, 113));
+        configurarBoton(btnEliminar, new Color(220, 20, 60));  // Color rojo para eliminar
         configurarBoton(btnListar, new Color(106, 90, 205));
         configurarBoton(btnLimpiar, new Color(178, 34, 34));
 
         // Eventos
         btnAgregar.addActionListener(this::agregarContacto);
         btnBuscar.addActionListener(this::buscarContacto);
+        btnEliminar.addActionListener(this::eliminarContacto);  // Nuevo evento
         btnListar.addActionListener(this::mostrarContactos);
         btnLimpiar.addActionListener(this::limpiarCampos);
 
         // Agregar botones
         panelBotones.add(btnAgregar);
         panelBotones.add(btnBuscar);
+        panelBotones.add(btnEliminar);  // Añadir botón al panel
         panelBotones.add(btnListar);
         panelBotones.add(btnLimpiar);
 
@@ -117,8 +121,8 @@ public class VentanaAgenda extends JFrame {
 
         // Configurar ventana
         setContentPane(panel);
-        setMinimumSize(new Dimension(500, 450));
-        setPreferredSize(new Dimension(600, 500));
+        setMinimumSize(new Dimension(600, 450));  // Aumentado para acomodar el nuevo botón
+        setPreferredSize(new Dimension(700, 500));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -168,6 +172,28 @@ public class VentanaAgenda extends JFrame {
             limpiarCampos(null);
         } else {
             txtResultados.setText("Error: Ya existe un contacto con ese nombre y apellido.");
+        }
+    }
+
+    // Nuevo método para eliminar contactos
+    private void eliminarContacto(ActionEvent e) {
+        String nombre = txtNombre.getText().trim();
+        String apellido = txtApellido.getText().trim();
+
+        if (nombre.isEmpty() || apellido.isEmpty()) {
+            txtResultados.setText("Error: Nombre y apellido son necesarios para eliminar un contacto.");
+            return;
+        }
+
+        // Crear contacto para buscar coincidencia (solo con nombre y apellido)
+        Contacto aEliminar = new Contacto(nombre, apellido, "");
+        
+        // Eliminar contacto usando el método de la clase Agenda
+        if (agenda.eliminarContacto(aEliminar)) {
+            txtResultados.setText("Contacto eliminado correctamente.");
+            limpiarCampos(null);
+        } else {
+            txtResultados.setText("Error: No se encontró ningún contacto con ese nombre y apellido.");
         }
     }
 

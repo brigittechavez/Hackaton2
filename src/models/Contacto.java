@@ -16,7 +16,7 @@ public class Contacto {
         return nombre;
     }
 
-    public String getApellido() { // Cambiado de getCorreo a getApellido
+    public String getApellido() {
         return apellido;
     }
 
@@ -28,7 +28,7 @@ public class Contacto {
         this.nombre = nombre;
     }
 
-    public void setApellido(String apellido) { // Cambiado de setCorreo a setApellido
+    public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
