@@ -1,3 +1,4 @@
+package models;
 class Contacto {
     private String nombre;
     private String apellido;
