@@ -2,11 +2,12 @@ package ui;
 
 import models.Contacto;
 import services.Agenda;
+import utils.Validador;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 public class VentanaAgenda extends JFrame {
     private Agenda agenda = new Agenda();
@@ -123,7 +124,7 @@ public class VentanaAgenda extends JFrame {
         setVisible(true);
     }
 
-    // Metodo para configurar botones
+    // Método para configurar botones
     private void configurarBoton(JButton boton, Color colorFondo) {
         boton.setBackground(colorFondo);
         boton.setForeground(Color.WHITE);
@@ -138,15 +139,36 @@ public class VentanaAgenda extends JFrame {
         String apellido = txtApellido.getText().trim();
         String telefono = txtTelefono.getText().trim();
 
-        if (nombre.isEmpty() || apellido.isEmpty() || telefono.isEmpty()) {
+        // Validación de campos
+        if (!Validador.validarCamposNoVacios(nombre, apellido, telefono)) {
             txtResultados.setText("Error: Todos los campos son obligatorios.");
             return;
         }
+        
+        if (!Validador.validarNombre(nombre)) {
+            txtResultados.setText("Error: El nombre debe contener solo letras y espacios.");
+            return;
+        }
+        
+        if (!Validador.validarApellido(apellido)) {
+            txtResultados.setText("Error: El apellido debe contener solo letras y espacios.");
+            return;
+        }
+        
+        if (!Validador.validarTelefono(telefono)) {
+            txtResultados.setText("Error: El teléfono debe contener exactamente 10 dígitos.");
+            return;
+        }
 
+        // Crear y agregar contacto
         Contacto nuevo = new Contacto(nombre, apellido, telefono);
-        agenda.añadirContacto(nuevo);
-        txtResultados.setText("Contacto añadido correctamente.");
-        limpiarCampos(null);
+        
+        if (agenda.agregarContacto(nuevo)) {
+            txtResultados.setText("Contacto añadido correctamente.");
+            limpiarCampos(null);
+        } else {
+            txtResultados.setText("Error: Ya existe un contacto con ese nombre y apellido.");
+        }
     }
 
     private void buscarContacto(ActionEvent e) {
@@ -158,16 +180,28 @@ public class VentanaAgenda extends JFrame {
             return;
         }
 
-        Contacto c = agenda.buscaContacto(nombre, apellido);
-        if (c != null) {
-            txtResultados.setText("Contacto encontrado:\n" + c);
-        } else {
+        // Buscar contacto por nombre y apellido
+        Contacto buscado = new Contacto(nombre, apellido, "");
+        List<Contacto> contactos = agenda.obtenerContactos();
+        
+        boolean encontrado = false;
+        for (Contacto c : contactos) {
+            if (c.equals(buscado)) {
+                txtResultados.setText("Contacto encontrado:\n" + c);
+                // Pre-rellenar el campo de teléfono para facilitar una posible actualización
+                txtTelefono.setText(c.getTelefono());
+                encontrado = true;
+                break;
+            }
+        }
+        
+        if (!encontrado) {
             txtResultados.setText("No se encontró ningún contacto con ese nombre y apellido.");
         }
     }
 
     private void mostrarContactos(ActionEvent e) {
-        ArrayList<Contacto> lista = agenda.listarContactos();
+        List<Contacto> lista = agenda.obtenerContactos();
         if (lista.isEmpty()) {
             txtResultados.setText("La agenda está vacía.");
         } else {
@@ -184,10 +218,5 @@ public class VentanaAgenda extends JFrame {
         txtApellido.setText("");
         txtTelefono.setText("");
         txtNombre.requestFocus();
-    }
-
-    // Método main para ejecutar la app
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(VentanaAgenda::new);
     }
 }
