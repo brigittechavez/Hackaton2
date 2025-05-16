@@ -78,7 +78,7 @@ public class VentanaAgenda extends JFrame {
         // Botones
         JButton btnAgregar = new JButton("Agregar");
         JButton btnBuscar = new JButton("Buscar");
-        JButton btnEliminar = new JButton("Eliminar");  // Nuevo botón para eliminar
+        JButton btnEliminar = new JButton("Eliminar");  // Botón para eliminar
         JButton btnListar = new JButton("Listar contactos");
         JButton btnLimpiar = new JButton("Limpiar");
 
@@ -92,7 +92,7 @@ public class VentanaAgenda extends JFrame {
         // Eventos
         btnAgregar.addActionListener(this::agregarContacto);
         btnBuscar.addActionListener(this::buscarContacto);
-        btnEliminar.addActionListener(this::eliminarContacto);  // Nuevo evento
+        btnEliminar.addActionListener(this::eliminarContacto);  // Evento para eliminar
         btnListar.addActionListener(this::mostrarContactos);
         btnLimpiar.addActionListener(this::limpiarCampos);
 
@@ -164,6 +164,12 @@ public class VentanaAgenda extends JFrame {
             return;
         }
 
+        // Verificar si la agenda está llena
+        if (agenda.agendaLlena()) {
+            txtResultados.setText("Error: La agenda está llena. No se pueden agregar más contactos.");
+            return;
+        }
+
         // Crear y agregar contacto
         Contacto nuevo = new Contacto(nombre, apellido, telefono);
         
@@ -175,7 +181,7 @@ public class VentanaAgenda extends JFrame {
         }
     }
 
-    // Nuevo método para eliminar contactos
+    // Método para eliminar contactos
     private void eliminarContacto(ActionEvent e) {
         String nombre = txtNombre.getText().trim();
         String apellido = txtApellido.getText().trim();
