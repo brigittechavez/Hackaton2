@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class VentanaAgenda {
+public class VentanaAgenda extends JFrame {
     private Agenda agenda = new Agenda();
 
     private JTextField txtNombre= new JTextField(10);
