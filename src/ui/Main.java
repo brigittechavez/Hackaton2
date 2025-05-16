@@ -1,5 +1,10 @@
 package ui;
-//Se encarga del menú, entrada del usuario, Scanner y conectar con Agenda.
+
+import javax.swing.SwingUtilities;
 
 public class Main {
+    public static void main(String[] args) {
+        // iniciar la interfaz grafica
+        SwingUtilities.invokeLater(VentanaAgenda::new);
+    }
 }
