@@ -1,12 +1,14 @@
+
 package models;
+
 public class Contacto {
     private String nombre;
-    private String apellido;
+    private String apellido; // Cambiado de correo a apellido
     private String telefono;
 
     public Contacto(String nombre, String apellido, String telefono) {
         this.nombre = nombre.trim();
-        this.apellido = apellido.trim();
+        this.apellido = apellido.trim(); // Ahora es apellido
         this.telefono = telefono.trim();
     }
 
@@ -14,15 +16,29 @@ public class Contacto {
         return nombre;
     }
 
-    public String getApellido() {
+    public String getApellido() { // Cambiado de getCorreo a getApellido
         return apellido;
     }
 
     public String getTelefono() {
         return telefono;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) { // Cambiado de setCorreo a setApellido
+        this.apellido = apellido;
+    }
+
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " " + apellido + " - " + telefono;
     }
 
     @Override
@@ -30,17 +46,13 @@ public class Contacto {
         if (this == obj) return true;
         if (!(obj instanceof Contacto)) return false;
         Contacto otro = (Contacto) obj;
-        return nombre.equalsIgnoreCase(otro.nombre) && apellido.equalsIgnoreCase(otro.apellido);
+
+        return nombre.equalsIgnoreCase(otro.nombre) &&
+                apellido.equalsIgnoreCase(otro.apellido);
     }
 
     @Override
     public int hashCode() {
         return (nombre.toLowerCase() + apellido.toLowerCase()).hashCode();
     }
-
-    @Override
-    public String toString() {
-        return nombre + " " + apellido + " - " + telefono;
-    }
 }
-
