@@ -57,10 +57,10 @@ public class Agenda {
     }
 
     // Método para listar todos los contactos ordenados alfabéticamente por nombre y apellido
-    public void listarContactos() {
+    public ArrayList<Contacto> listarContactos() {
         if (contactos.isEmpty()) {
             System.out.println("La agenda está vacía.");
-            return;
+            return contactos;
         }
         // Ordenar contactos ignorando mayúsculas/minúsculas
         Collections.sort(contactos, new Comparator<Contacto>() {
@@ -76,19 +76,21 @@ public class Agenda {
         for (Contacto c : contactos) {
             System.out.println(c);
         }
+        return contactos; // Añade este return
     }
 
     // Método para buscar un contacto por nombre y apellido y mostrar su teléfono
-    public void buscaContacto(String nombre, String apellido) {
+    public Contacto buscaContacto(String nombre, String apellido) {
         nombre = nombre.trim().toLowerCase();
         apellido = apellido.trim().toLowerCase();
         for (Contacto c : contactos) {
             if (c.getNombre().toLowerCase().equals(nombre) && c.getApellido().toLowerCase().equals(apellido)) {
                 System.out.println("Teléfono de " + c.getNombre() + " " + c.getApellido() + ": " + c.getTelefono());
-                return;
+                return c; // Retorna el contacto encontrado, no contactoEncontrado
             }
         }
         System.out.println("Contacto no encontrado.");
+        return null; // Añade este return
     }
 
     // Método para eliminar un contacto de la agenda
@@ -113,4 +115,9 @@ public class Agenda {
         }
         System.out.println("El contacto no existe en la agenda.");
     }
+
+    public ArrayList<Contacto> getContactos() {
+        return contactos;
+    }
+
 }
